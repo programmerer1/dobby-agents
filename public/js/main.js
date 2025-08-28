@@ -25,7 +25,11 @@ const app = Vue.createApp({
         }
     },
     methods: {
-        autoCast(value) {
+        autoCast(value, key) {
+            if (['password', 'password_confirmation', 'username', 'email'].includes(key)) {
+                return value;
+            }
+
             if (value === 'true') return true;
             if (value === 'false') return false;
             if (value === '1') return 1;
@@ -35,7 +39,7 @@ const app = Vue.createApp({
         },
         normalizeData(data) {
             return Object.fromEntries(
-                Object.entries(data).map(([k, v]) => [k, this.autoCast(v)])
+                Object.entries(data).map(([k, v]) => [k, this.autoCast(v, k)])
             );
         },
         getAgentChatUrl(agent) {
