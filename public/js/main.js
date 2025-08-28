@@ -23,8 +23,18 @@ const app = Vue.createApp({
         if (document.getElementById('chatMessages')) {
             this.getMessages();
         }
+
+        const textarea = document.getElementById('messageInput');
+        if (textarea) {
+            textarea.addEventListener('input', this.autoResizeTextarea);
+        }
     },
     methods: {
+        autoResizeTextarea(e) {
+            const textarea = e.target;
+            textarea.style.height = 'auto'; // Сбрасываем высоту
+            textarea.style.height = `${textarea.scrollHeight}px`; // Устанавливаем высоту под содержимое
+        },
         autoCast(value, key) {
             if (['password', 'password_confirmation', 'username', 'email'].includes(key)) {
                 return value;
