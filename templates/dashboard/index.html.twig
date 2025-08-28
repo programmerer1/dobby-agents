@@ -21,7 +21,7 @@
                     <a href="{{ url('app_dashboard') }}" class="nav-link">Dashboard</a>
                     <a href="{{ url('app_dashboard_my_agents') }}" class="nav-link">My Agents</a>
                     <div class="nav-user">
-                        <span class="user-name">John Doe</span>
+                        <span class="user-name">{{ app.user.getUsername() }}</span>
                         <a class="logout-btn" href="/logout">Logout</a>
                     </div>
                 </div>

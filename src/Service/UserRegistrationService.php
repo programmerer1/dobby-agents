@@ -22,8 +22,8 @@ class UserRegistrationService
 
     public function registerUser(RegisterUserDto $registerUserDto): JsonResponse
     {
-        $this->user->setEmail($registerUserDto->email)
-            ->setUsername($registerUserDto->username)
+        $this->user->setEmail(strtolower($registerUserDto->email))
+            ->setUsername(strtolower($registerUserDto->username))
             ->setPassword($this->passwordHasher->hashPassword($this->user, $registerUserDto->password));
         $errors = $this->validator->validate($this->user);
         $response = [];

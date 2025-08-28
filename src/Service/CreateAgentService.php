@@ -20,7 +20,7 @@ class CreateAgentService
 
     public function createAgent(CreateAgentDto $createAgentDto, User $user): JsonResponse
     {
-        $this->agent->setUsername($createAgentDto->username)
+        $this->agent->setUsername(strtolower($createAgentDto->username))
             ->setName($createAgentDto->name)
             ->setDescr($createAgentDto->descr)
             ->setSystemPrompt($createAgentDto->systemPrompt)
