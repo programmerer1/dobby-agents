@@ -1,0 +1,51 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title %}Chat with {{ agent.name }}{% endblock %}
+
+{% block body %}
+<div class="chat-container">
+    <div class="chat-sidebar">
+        <div class="chat-agent-info">
+            <div class="agent-avatar"><img src="{{ asset('img/dobby.png') }}" alt="dobby"></div>
+            <div class="agent-details">
+                <h3 id="agentName">{{ agent.name }}</h3>
+                <span class="agent-status {{ agent.isPublic ? 'public' : 'private' }}" id="agentStatus">{{
+                    agent.isPublic ? 'Public' : 'Private' }}</span>
+                <p id="agentDescription">{{ agent.descr }}</p>
+            </div>
+        </div>
+
+        <div class="chat-history">
+            <h4>Recent Conversations</h4>
+            <div class="conversation-list">
+                {% for chatItem in chats %}
+                <a class="conversation-item" href="{{ url('app_dashboard_agent_chat_messages', {id:chatItem.id}) }}">
+                    <div class="conversation-preview">
+                        <h5>{{ chatItem.title }}</h5>
+                        <span class="conversation-time">{{ chatItem.createdAt|date("Y-m-d H:i") }}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            <a class="btn btn-secondary btn-full"
+                href="{{ url('app_dashboard_agent_chat', {'slug':agent.username}) }}">New Chat</a>
+        </div>
+    </div>
+
+    <div class="chat-main">
+        <div class="chat-header">
+            <h2>What's on your mind today?</h2>
+        </div>
+        <div class="chat-input-container">
+            <form id="chatForm" class="chat-form" v-on:submit.prevent="handleCreateChat"
+                action="{{ url('app_dashboard_agent_chat_create', {'slug':agent.username}) }}">
+                <div class="chat-input-wrapper">
+                    <textarea id="messageInput" name="text" placeholder="Type your message..." rows="1"
+                        class="chat-input" maxlength="5000" required></textarea>
+                    <button type="submit" class="send-btn" title="Send message">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

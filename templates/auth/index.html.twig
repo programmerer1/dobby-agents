@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body class="auth-page">
+    <div class="auth-container" id="app">
+        <div class="auth-card">
+            {% block body %}{% endblock %}
+        </div>
+        <div v-if="modalVisible" class="modal-overlay">
+            <div class="modal">
+                <p>[[ modalFormMessage ]]</p>
+                <button @click="closeModal" class="modal-close-btn"></button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('vendor/js/vue.global.js') }}" defer></script>
+    <script src="/js/main.js" defer></script>
+</body>
+
+</html>

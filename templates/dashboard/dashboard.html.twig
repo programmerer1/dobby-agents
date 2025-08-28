@@ -1,0 +1,47 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title %}AI Agents Dashboard{% endblock %}
+
+{% block body %}
+<div class="container" id="allAgents">
+    <div class="dashboard-header">
+        <h1>AI Agents Dashboard</h1>
+        <p>Create and manage your AI agents</p>
+    </div>
+
+    <div class="dashboard-actions">
+        <a class="btn btn-primary" href="{{ url('app_dashboard_create_agent') }}">
+            <span class="btn-icon">+</span>
+            Create New Agent
+        </a>
+        <a href="{{ url('app_dashboard') }}" class="btn btn-secondary">View All Agents</a>
+    </div>
+
+    <div class="recent-agents">
+        <h2>Recent Agents</h2>
+        <div class="agents-grid" id="agentsPage" data-agents-url="{{ url('app_dashboard_agents_load') }}"
+            data-agent-chat-url="{{ path('app_dashboard_agent_chat', {'slug': '__SLUG__'}) }}">
+            <div class="agent-card" v-for="agent in agents" :key="agent.id">
+                <div class="agent-header">
+                    <h3>[[ agent.name ]]</h3>
+                    <span class="agent-status" :class="agent.isPublic ? 'public' : 'private'">
+                        [[ agent.isPublic ? 'Public' : 'Private' ]]
+                    </span>
+                </div>
+                <p class="agent-description">[[ agent.descr ]]</p>
+                <div class="agent-footer">
+                    <span class="agent-date">[[ agent.createdAt ]]</span>
+                    <div class="agent-actions">
+                        <a class="btn btn-small btn-primary" :href="getAgentChatUrl(agent)">Chat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hasMore mt-3" v-if="hasMore">
+            <button class="btn btn-secondary" @click="loadAllAgents" :disabled="loading">
+                [[ loading ? 'Loading...' : 'Show more' ]]
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

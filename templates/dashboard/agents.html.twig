@@ -1,0 +1,65 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title %}My Agents{% endblock %}
+
+{% block body %}
+<div class="container" id="allAgents">
+    <div class="page-header">
+        <div>
+            <h1 id="pageTitle">My Agents</h1>
+            <p id="pageDescription">Manage and organize your AI agents</p>
+        </div>
+        <a class="btn btn-primary" href="{{ url('app_dashboard_create_agent') }}">
+            <span class="btn-icon">+</span>
+            Create Agent
+        </a>
+    </div>
+
+    <!--<div class="agents-filters">
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All Agents</button>
+            <button class="filter-tab" data-filter="public">Public</button>
+            <button class="filter-tab" data-filter="private">Private</button>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchAgents" placeholder="Search agents..." class="search-input">
+        </div>
+    </div>!-->
+
+    <div class="agents-grid" id="agentsPage" data-agents-url="{{ url('app_dashboard_my_agents_load') }}"
+        data-agent-chat-url="{{ path('app_dashboard_agent_chat', {'slug': '__SLUG__'}) }}"
+        data-agent-edit-url="{{ path('app_dashboard_edit_agent', {'id': '__ID__'}) }}">
+        <div class="agent-card" v-for="agent in agents" :key="agent.id" data-type="public">
+            <div class="agent-header">
+                <h3>[[ agent.name ]]</h3>
+                <span class="agent-status" :class="agent.isPublic ? 'public' : 'private'">
+                    [[ agent.isPublic ? 'Public' : 'Private' ]]
+                </span>
+            </div>
+            <p class="agent-description">[[ agent.descr ]]</p>
+            <!--<div class="agent-stats">
+                <span class="stat-item">
+                    <span class="stat-icon">💬</span>
+                    42 chats
+                </span>
+                <span class="stat-item">
+                    <span class="stat-icon">👥</span>
+                    15 users
+                </span>
+            </div>!-->
+            <div class="agent-footer">
+                <span class="agent-date">[[ agent.createdAt ]]</span>
+                <div class="agent-actions">
+                    <a class="btn btn-small btn-primary" :href="getAgentChatUrl(agent)">Chat</a>
+                    <a class="btn btn-small btn-secondary" :href="getAgentEditUrl(agent)">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hasMore mt-3" v-if="hasMore">
+        <button class="btn btn-secondary" @click="loadAllAgents" :disabled="loading">
+            [[ loading ? 'Loading...' : 'Show more' ]]
+        </button>
+    </div>
+</div>
+{% endblock %}
