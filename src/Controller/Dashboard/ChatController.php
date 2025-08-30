@@ -52,7 +52,7 @@ final class ChatController extends AbstractController
             return $this->json(['status' => 403, 'error' => 'Access denied']);
         }
 
-        return $createChatService->createChat($createMessageDto, $agent, $this->getUser());
+        return $createChatService->createChat($createMessageDto, $agent);
     }
 
     /** The VSC IDE did not recognize the methods, so I had to create this method.  */

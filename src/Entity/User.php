@@ -58,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Chat::class, mappedBy: 'user')]
     private Collection $chats;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fireworksApiKey = null;
+
     public function __construct()
     {
         $this->agents = new ArrayCollection();
@@ -255,6 +258,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $chat->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFireworksApiKey(): ?string
+    {
+        return $this->fireworksApiKey;
+    }
+
+    public function setFireworksApiKey(?string $fireworksApiKey): static
+    {
+        $this->fireworksApiKey = $fireworksApiKey;
 
         return $this;
     }

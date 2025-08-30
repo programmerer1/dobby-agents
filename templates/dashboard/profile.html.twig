@@ -1,0 +1,29 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>User Profile</h1>
+        <p>Add and change your settings</p>
+    </div>
+
+    <div class="form-container">
+        <form id="createAgentForm" class="agent-form" v-on:submit.prevent="handleUpdateFireworksApiKey"
+            action="{{ url('app_dashboard_update_fireworks_api_key') }}">
+            <div class="form-section">
+                <h3>Update Fireworks API key</h3>
+                <div class="form-group">
+                    <label for="fireworksApiKey">API key</label>
+                    <input type="text" id="fireworksApiKey" name="apiKey" data-type="string" maxlength="255"
+                        value="{{ app.user.getFireworksApiKey() }}">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

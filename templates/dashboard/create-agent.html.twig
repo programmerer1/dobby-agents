@@ -22,20 +22,21 @@
 
                 <div class="form-group">
                     <label for="name">Agent Name</label>
-                    <input type="text" id="name" name="name" minlength="3" maxlength="100" required>
+                    <input type="text" id="name" name="name" minlength="3" data-type="string" maxlength="100" required>
                 </div>
                 <div class="form-group">
                     <label for="username">Username (unique username)</label>
-                    <input type="text" id="username" name="username" minlength="3" maxlength="100" required>
+                    <input type="text" id="username" name="username" minlength="3" data-type="string" maxlength="100"
+                        required>
                 </div>
                 <div class="form-group">
                     <label for="descr">Description</label>
-                    <textarea id="descr" name="descr" rows="2" maxlength="150" required></textarea>
+                    <textarea id="descr" name="descr" rows="2" maxlength="150" data-type="string" required></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="systemPrompt">Instructions</label>
-                    <textarea id="systemPrompt" name="systemPrompt" rows="12" maxlength="2000"
+                    <textarea id="systemPrompt" name="systemPrompt" rows="12" data-type="string" maxlength="2000"
                         placeholder="Provide detailed instructions for your AI agent..." required></textarea>
                 </div>
 
@@ -43,12 +44,12 @@
                     <label>Visibility</label>
                     <div class="radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="isPublic" value="1" checked>
+                            <input type="radio" name="isPublic" value="1" data-type="bool" checked>
                             <span class="radio-custom"></span>
                             Public - Anyone can use this agent
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="isPublic" value="0">
+                            <input type="radio" name="isPublic" data-type="bool" value="0">
                             <span class="radio-custom"></span>
                             Private - Only you can use this agent
                         </label>
@@ -62,13 +63,14 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="maxTokens">Max Tokens</label>
-                        <input type="number" id="maxTokens" name="maxTokens" min="1" max="16384" value="2048" required>
+                        <input type="number" id="maxTokens" name="maxTokens" data-type="int" min="1" max="16384"
+                            value="2048" required>
                         <small class="form-hint">Maximum number of tokens to generate (1-16384)</small>
                     </div>
                     <div class="form-group">
                         <label for="temperature">Temperature</label>
-                        <input type="number" id="temperature" name="temperature" min="0.0" max="2.0" step="0.1"
-                            value="0.5" required>
+                        <input type="number" id="temperature" name="temperature" data-type="float" min="0.0" max="2.0"
+                            step="0.1" value="0.5" required>
                         <small class="form-hint">Controls randomness (0.0-2.0)</small>
                     </div>
                 </div>
@@ -76,12 +78,14 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="topP">Top P</label>
-                        <input type="number" id="topP" name="topP" min="0.0" max="1.0" step="0.01" value="1.0" required>
+                        <input type="number" id="topP" name="topP" data-type="float" min="0.0" max="1.0" step="0.01"
+                            value="1.0" required>
                         <small class="form-hint">Nucleus sampling parameter (0.0-1.0)</small>
                     </div>
                     <div class="form-group">
                         <label for="topK">Top K</label>
-                        <input type="number" id="topK" name="topK" min="1" max="100" value="40" required>
+                        <input type="number" id="topK" name="topK" data-type="int" min="1" max="100" value="40"
+                            required>
                         <small class="form-hint">Top-k sampling parameter (1-100)</small>
                     </div>
                 </div>
@@ -89,14 +93,14 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="presencePenalty">Presence Penalty</label>
-                        <input type="number" id="presencePenalty" name="presencePenalty" min="-2.0" max="2.0" step="0.1"
-                            value="0" required>
+                        <input type="number" id="presencePenalty" name="presencePenalty" data-type="float" min="-2.0"
+                            max="2.0" step="0.1" value="0" required>
                         <small class="form-hint">Penalizes new tokens based on presence (-2.0 to 2.0)</small>
                     </div>
                     <div class="form-group">
                         <label for="frequencyPenalty">Frequency Penalty</label>
-                        <input type="number" id="frequencyPenalty" name="frequencyPenalty" min="-2.0" max="2.0"
-                            step="0.1" value="0" required>
+                        <input type="number" id="frequencyPenalty" name="frequencyPenalty" data-type="float" min="-2.0"
+                            max="2.0" step="0.1" value="0" required>
                         <small class="form-hint">Penalizes new tokens based on frequency (-2.0 to 2.0)</small>
                     </div>
                 </div>

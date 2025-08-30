@@ -22,8 +22,8 @@
 
                 <div class="form-group">
                     <label for="name">Agent Name</label>
-                    <input type="text" id="name" name="name" minlength="3" maxlength="100" value="{{ agent.name }}"
-                        required>
+                    <input type="text" id="name" name="name" data-type="string" minlength="3" maxlength="100"
+                        value="{{ agent.name }}" required>
                 </div>
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -32,13 +32,13 @@
                 </div>
                 <div class="form-group">
                     <label for="descr">Description</label>
-                    <textarea id="descr" name="descr" rows="2" maxlength="150" value="{{ agent.descr }}"
-                        required></textarea>
+                    <textarea id="descr" name="descr" data-type="string" rows="2" maxlength="150"
+                        value="{{ agent.descr }}" required></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="systemPrompt">Instructions</label>
-                    <textarea id="systemPrompt" name="systemPrompt" rows="12" maxlength="2000"
+                    <textarea id="systemPrompt" name="systemPrompt" data-type="string" rows="12" maxlength="2000"
                         placeholder="Provide detailed instructions for your AI agent..."
                         value="{{ agent.systemPrompt }}" required></textarea>
                 </div>
@@ -47,14 +47,14 @@
                     <label>Visibility</label>
                     <div class="radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="isPublic" value="1" {% if agent.isPublic==1 %} checked {% endif
-                                %}>
+                            <input type="radio" name="isPublic" data-type="bool" value="1" {% if agent.isPublic==1 %}
+                                checked {% endif %}>
                             <span class="radio-custom"></span>
                             Public - Anyone can use this agent
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="isPublic" value="0" {% if agent.isPublic==0 %} checked {% endif
-                                %}>
+                            <input type="radio" name="isPublic" data-type="bool" value="0" {% if agent.isPublic==0 %}
+                                checked {% endif %}>
                             <span class="radio-custom"></span>
                             Private - Only you can use this agent
                         </label>
@@ -68,14 +68,14 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="maxTokens">Max Tokens</label>
-                        <input type="number" id="maxTokens" name="maxTokens" min="1" max="16384"
+                        <input type="number" id="maxTokens" name="maxTokens" data-type="int" min="1" max="16384"
                             value="{{ agent.maxTokens }}" required>
                         <small class="form-hint">Maximum number of tokens to generate (1-16384)</small>
                     </div>
                     <div class="form-group">
                         <label for="temperature">Temperature</label>
-                        <input type="number" id="temperature" name="temperature" min="0.0" max="2.0" step="0.1"
-                            value="{{ agent.temperature }}" required>
+                        <input type="number" id="temperature" name="temperature" data-type="float" min="0.0" max="2.0"
+                            step="0.1" value="{{ agent.temperature }}" required>
                         <small class="form-hint">Controls randomness (0.0-2.0)</small>
                     </div>
                 </div>
@@ -83,13 +83,14 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="topP">Top P</label>
-                        <input type="number" id="topP" name="topP" min="0.0" max="1.0" step="0.01"
+                        <input type="number" id="topP" name="topP" data-type="float" min="0.0" max="1.0" step="0.01"
                             value="{{ agent.topP }}" required>
                         <small class="form-hint">Nucleus sampling parameter (0.0-1.0)</small>
                     </div>
                     <div class="form-group">
                         <label for="topK">Top K</label>
-                        <input type="number" id="topK" name="topK" min="1" max="100" value="{{ agent.topK }}" required>
+                        <input type="number" id="topK" name="topK" data-type="int" min="1" max="100"
+                            value="{{ agent.topK }}" required>
                         <small class="form-hint">Top-k sampling parameter (1-100)</small>
                     </div>
                 </div>
@@ -97,14 +98,14 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="presencePenalty">Presence Penalty</label>
-                        <input type="number" id="presencePenalty" name="presencePenalty" min="-2.0" max="2.0" step="0.1"
-                            value="{{ agent.presencePenalty }}" required>
+                        <input type="number" id="presencePenalty" name="presencePenalty" data-type="float" min="-2.0"
+                            max="2.0" step="0.1" value="{{ agent.presencePenalty }}" required>
                         <small class="form-hint">Penalizes new tokens based on presence (-2.0 to 2.0)</small>
                     </div>
                     <div class="form-group">
                         <label for="frequencyPenalty">Frequency Penalty</label>
-                        <input type="number" id="frequencyPenalty" name="frequencyPenalty" min="-2.0" max="2.0"
-                            step="0.1" value="{{ agent.frequencyPenalty }}" required>
+                        <input type="number" id="frequencyPenalty" name="frequencyPenalty" data-type="float" min="-2.0"
+                            max="2.0" step="0.1" value="{{ agent.frequencyPenalty }}" required>
                         <small class="form-hint">Penalizes new tokens based on frequency (-2.0 to 2.0)</small>
                     </div>
                 </div>

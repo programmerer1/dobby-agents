@@ -40,8 +40,8 @@
             <form id="chatForm" class="chat-form" v-on:submit.prevent="handleCreateChat"
                 action="{{ url('app_dashboard_agent_chat_create', {'slug':agent.username}) }}">
                 <div class="chat-input-wrapper">
-                    <textarea id="messageInput" name="text" placeholder="Type your message..." rows="1"
-                        class="chat-input" maxlength="5000" required></textarea>
+                    <textarea id="messageInput" name="text" placeholder="Type your message..." data-type="string"
+                        rows="1" class="chat-input" maxlength="5000" required></textarea>
                     <button type="submit" class="send-btn" title="Send message">Send</button>
                 </div>
             </form>

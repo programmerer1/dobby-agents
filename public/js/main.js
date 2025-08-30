@@ -35,21 +35,33 @@ const app = Vue.createApp({
             textarea.style.height = 'auto'; // Сбрасываем высоту
             textarea.style.height = `${textarea.scrollHeight}px`; // Устанавливаем высоту под содержимое
         },
-        autoCast(value, key) {
-            if (['password', 'password_confirmation', 'username', 'email'].includes(key)) {
-                return value;
+        autoCast(value, type = null) {
+            if (type) {
+                switch (type) {
+                    case 'int':
+                        return parseInt(value, 10);
+                    case 'float':
+                        return parseFloat(value);
+                    case 'bool':
+                        return value === 'true' || value === true || value === 1 || value === '1';
+                    case 'string':
+                        return String(value);
+                    default:
+                        return value;
+                }
             }
 
-            if (value === 'true') return true;
-            if (value === 'false') return false;
-            if (value === '1') return 1;
-            if (value === '0') return 0;
-            if (!isNaN(value) && value.trim() !== '') return Number(value);
             return value;
         },
+
         normalizeData(data) {
             return Object.fromEntries(
-                Object.entries(data).map(([k, v]) => [k, this.autoCast(v, k)])
+                Object.entries(data).map(([k, v]) => {
+                    if (typeof v === 'object' && v !== null && 'value' in v) {
+                        return [k, this.autoCast(v.value, v.type)];
+                    }
+                    return [k, this.autoCast(v)];
+                })
             );
         },
         getAgentChatUrl(agent) {
@@ -219,8 +231,9 @@ const app = Vue.createApp({
                 return false;
             }
         },
-
-
+        async handleUpdateFireworksApiKey(e) {
+            await this.sendPostRequest(e.srcElement, e.target);
+        },
         async handleCreateChat(e) {
             await this.sendPostRequest(e.srcElement, e.target);
         },

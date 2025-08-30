@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace App\Service;
 
 use Symfony\Component\HttpClient\HttpClient;
-use App\Entity\Agent;
+use App\Entity\{Agent, User};
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class FireworksApiService
 {
     private $httpClient;
+    private $tokenStorage;
 
-    public function __construct()
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->httpClient = HttpClient::create();
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function send(Agent $agent, $prompt, array $chatHistory = [])
@@ -28,6 +31,9 @@ class FireworksApiService
             'content' => $agent->getSystemPrompt()
         ]);
 
+        $userApiKey = $this->getUser()->getFireworksApiKey();
+        $apiKey = !empty($userApiKey) ? $userApiKey : $_ENV['DEFAULT_API_KEY'];
+
         $payload = [
             'model' => $_ENV['MODEL_NAME'],
             'max_tokens' => $agent->getMaxTokens(),
@@ -41,7 +47,7 @@ class FireworksApiService
 
         $response = $this->httpClient->request('POST', $_ENV['FIREWORKS_API_URL'], [
             'headers' => [
-                'Authorization' => 'Bearer ' . $_ENV['DEFAULT_API_KEY'],
+                'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ],
@@ -50,5 +56,10 @@ class FireworksApiService
 
         $data = json_decode($response->getContent(), true);
         return $data['choices'][0]['message']['content'] ?? '';
+    }
+
+    private function getUser(): User
+    {
+        return $this->tokenStorage->getToken()->getUser();
     }
 }
