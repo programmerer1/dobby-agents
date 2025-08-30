@@ -35,34 +35,36 @@ const app = Vue.createApp({
             textarea.style.height = 'auto'; // Сбрасываем высоту
             textarea.style.height = `${textarea.scrollHeight}px`; // Устанавливаем высоту под содержимое
         },
-        autoCast(value, type = null) {
-            if (type) {
-                switch (type) {
-                    case 'int':
-                        return parseInt(value, 10);
-                    case 'float':
-                        return parseFloat(value);
-                    case 'bool':
-                        return value === 'true' || value === true || value === 1 || value === '1';
-                    case 'string':
-                        return String(value);
-                    default:
-                        return value;
-                }
+        autoCast(value, key, type = null) {
+            if (!type) {
+                return value;
             }
 
-            return value;
+            switch (type) {
+                case 'int':
+                    return parseInt(value, 10);
+                case 'float':
+                    return parseFloat(value);
+                case 'bool':
+                    return value === 'true' || value === true || value === '1' || value === 1;
+                case 'string':
+                    return String(value);
+                default:
+                    return value;
+            }
         },
 
-        normalizeData(data) {
-            return Object.fromEntries(
-                Object.entries(data).map(([k, v]) => {
-                    if (typeof v === 'object' && v !== null && 'value' in v) {
-                        return [k, this.autoCast(v.value, v.type)];
-                    }
-                    return [k, this.autoCast(v)];
-                })
-            );
+        normalizeData(form, data) {
+            const normalized = {};
+
+            for (const [key, value] of Object.entries(data)) {
+                const el = form.querySelector(`[name="${key}"]`);
+                const type = el?.dataset.type || null;
+
+                normalized[key] = this.autoCast(value, key, type);
+            }
+
+            return normalized;
         },
         getAgentChatUrl(agent) {
             let template = document.getElementById('agentsPage').dataset.agentChatUrl;
@@ -129,9 +131,8 @@ const app = Vue.createApp({
                 return false;
             }
 
-            const formData = new FormData(target);
-            const data = Object.fromEntries(formData.entries());
-            const normalized = this.normalizeData(data);
+            const formData = Object.fromEntries(new FormData(target).entries());
+            const normalized = this.normalizeData(target, formData);
 
             try {
                 const response = await fetch(form.action, {
@@ -189,9 +190,8 @@ const app = Vue.createApp({
             }
 
             this.isChatBtnDisabled = true;
-            const formData = new FormData(target);
-            const data = Object.fromEntries(formData.entries());
-            const normalized = this.normalizeData(data);
+            const formData = Object.fromEntries(new FormData(target).entries());
+            const normalized = this.normalizeData(target, formData);
 
             this.messages.push({
                 'role': 'user',
