@@ -7,7 +7,8 @@ framework:
 
     #esi: true
     #fragments: true
-
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-host']
 when@test:
     framework:
         test: true
