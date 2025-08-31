@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Email Verification</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+        }
+
+        td {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #6c757d;
+            padding: 20px;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 600px) {
+            table {
+                width: 100%;
+            }
+
+            td {
+                padding: 15px;
+            }
+
+            .button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table align="center">
+        <tr>
+            <td class="header">
+                <h1>Dear user!</h1>
+            </td>
+        </tr>
+        {% block body %}{% endblock %}
+        <tr>
+            <td class="footer">
+                <p>If you did not create an account with [Your App Name], please ignore this email.</p>
+                <p>&copy; [Year] [Your App Name]. All rights reserved.</p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
