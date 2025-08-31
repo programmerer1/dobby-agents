@@ -33,7 +33,7 @@ final class RegisterController extends AbstractController
         if ($this->getUser()) {
             return $this->json([
                 'status' => 200,
-                'message' => 'Login successful. You will now be redirected to your account. If your browser does not support redirects, refresh page.',
+                'message' => 'Login successful. You will now be redirected to your account.',
                 'redirect' => $this->generateUrl('app_dashboard')
             ]);
         }

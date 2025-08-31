@@ -48,7 +48,8 @@ class CreateResetPasswordTokenService
         $resetUrl = $this->urlGeneratorInterface->generate('app_auth_reset_password_token_page', [
             'email' => $user->getEmail(),
             'token' => $passwordResetToken->getToken(),
-        ]);
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+
         $this->emailResetPasswordTokenService->send($resetUrl, $user->getEmail());
 
         $this->entityManager->persist($passwordResetToken);

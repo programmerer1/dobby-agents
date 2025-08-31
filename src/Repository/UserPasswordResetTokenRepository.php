@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\UserPasswordResetToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use \DateTimeImmutable;
 
 /**
  * @extends ServiceEntityRepository<UserPasswordResetToken>
@@ -16,28 +18,24 @@ class UserPasswordResetTokenRepository extends ServiceEntityRepository
         parent::__construct($registry, UserPasswordResetToken::class);
     }
 
-    //    /**
-    //     * @return UserPasswordResetToken[] Returns an array of UserPasswordResetToken objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findValidToken(string $token): ?UserPasswordResetToken
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.token = :token')
+            ->andWhere('t.expiresAt > :now')
+            ->setParameter('token', $token)
+            ->setParameter('now', new DateTimeImmutable())
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
-    //    public function findOneBySomeField($value): ?UserPasswordResetToken
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function deleteUserTokens(User $user): void
+    {
+        $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+    }
 }

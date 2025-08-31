@@ -254,6 +254,10 @@ const app = Vue.createApp({
         },
         async handleCreateResetPasswordToken(e) {
             await this.sendPostRequest(e.srcElement, e.target);
+            e.srcElement.reset();
+        },
+        async handleResetPassword(e) {
+            await this.sendPostRequest(e.srcElement, e.target);
         },
         showModal(message) {
             this.modalFormMessage = message;
