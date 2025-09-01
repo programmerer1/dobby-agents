@@ -3,15 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\{PasswordAuthenticatedUserInterface, UserInterface};
 use App\Validator\UniqueUserUsernameAndEmail;
+use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
 #[UniqueUserUsernameAndEmail]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -60,6 +59,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fireworksApiKey = null;
+
+    #[ORM\Column(type: Types::SMALLINT, options: ['default' => 0])]
+    private ?int $loginFailedAttempts = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $lastLoginFailedAt = null;
 
     public function __construct()
     {
@@ -272,5 +277,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->fireworksApiKey = $fireworksApiKey;
 
         return $this;
+    }
+
+    public function getLoginFailedAttempts(): ?int
+    {
+        return $this->loginFailedAttempts;
+    }
+
+    public function setLoginFailedAttempts(int $loginFailedAttempts): static
+    {
+        $this->loginFailedAttempts = $loginFailedAttempts;
+
+        return $this;
+    }
+
+    public function getLastLoginFailedAt(): ?\DateTimeImmutable
+    {
+        return $this->lastLoginFailedAt;
+    }
+
+    public function setLastLoginFailedAt(?\DateTimeImmutable $lastLoginFailedAt): static
+    {
+        $this->lastLoginFailedAt = $lastLoginFailedAt;
+
+        return $this;
+    }
+
+    public function incrementLoginFailedAttempts(): static
+    {
+        $this->loginFailedAttempts++;
+        $this->lastLoginFailedAt = new DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function resetLoginFailedAttempts(): static
+    {
+        $this->loginFailedAttempts = 0;
+        $this->lastLoginFailedAt = null;
+
+        return $this;
+    }
+
+    public function isLoginLocked(int $maxAttempts = 5, int $lockMinutes = 15): bool
+    {
+        if ($this->loginFailedAttempts < $maxAttempts) {
+            return false;
+        }
+
+        if ($this->lastLoginFailedAt === null) {
+            return false;
+        }
+
+        $unlockTime = $this->lastLoginFailedAt->modify("+{$lockMinutes} minutes");
+
+        return new DateTimeImmutable() < $unlockTime;
     }
 }
