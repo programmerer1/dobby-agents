@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\User;
 use App\Repository\AgentRepository;
 use Symfony\Component\HttpFoundation\{RequestStack, JsonResponse};
 
@@ -14,22 +13,27 @@ class PaginateAgentService
     private int $page;
     private $offset;
     private AgentRepository $agentRepository;
+    private UserService $userService;
 
-    public function __construct(AgentRepository $agentRepository, RequestStack $requestStack)
-    {
+    public function __construct(
+        AgentRepository $agentRepository,
+        RequestStack $requestStack,
+        UserService $userService
+    ) {
         $this->agentRepository = $agentRepository;
+        $this->userService = $userService;
         $this->page = max(1, (int)$requestStack->getCurrentRequest()->query->get('page', 1));
         $this->offset = ($this->page - 1) * $this->limit;
     }
 
-    public function getAgents(User $user): JsonResponse
+    public function getAgents(): JsonResponse
     {
-        return $this->buildResponse($this->agentRepository->findVisibleForUserPaginated($user, $this->limit + 1, $this->offset));
+        return $this->buildResponse($this->agentRepository->findVisibleForUserPaginated($this->userService->getUser(), $this->limit + 1, $this->offset));
     }
 
-    public function getMyAgents(User $user): JsonResponse
+    public function getMyAgents(): JsonResponse
     {
-        return $this->buildResponse($this->agentRepository->findUserAgentsPaginated($user, $this->limit + 1, $this->offset));
+        return $this->buildResponse($this->agentRepository->findUserAgentsPaginated($this->userService->getUser(), $this->limit + 1, $this->offset));
     }
 
     private function buildResponse(array $agents): JsonResponse

@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Dto\CreateAgentDto;
-use App\Entity\{Agent, User};
+use App\Entity\Agent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,9 +16,10 @@ class CreateAgentService
         public readonly ValidatorInterface $validator,
         public readonly Agent $agent,
         public readonly UrlGeneratorInterface $urlGeneratorInterface,
+        public readonly UserService $userService
     ) {}
 
-    public function createAgent(CreateAgentDto $createAgentDto, User $user): JsonResponse
+    public function createAgent(CreateAgentDto $createAgentDto): JsonResponse
     {
         $this->agent->setUsername(strtolower($createAgentDto->username))
             ->setName($createAgentDto->name)
@@ -32,7 +33,7 @@ class CreateAgentService
             ->setTopP($createAgentDto->topP)
             ->setFrequencyPenalty($createAgentDto->frequencyPenalty)
             ->setPresencePenalty($createAgentDto->presencePenalty)
-            ->setUser($user);
+            ->setUser($this->userService->getUser());
 
         $errors = $this->validator->validate($this->agent);
         $response = [];

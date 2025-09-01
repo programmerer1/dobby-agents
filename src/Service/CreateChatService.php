@@ -7,7 +7,6 @@ use App\Entity\{Agent, Chat, Message};
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class CreateChatService
 {
@@ -17,13 +16,13 @@ class CreateChatService
         public readonly Message $message,
         public readonly UrlGeneratorInterface $urlGeneratorInterface,
         public readonly FireworksApiService $fireworksApiService,
-        public readonly TokenStorageInterface $tokenStorageInterface,
+        public readonly UserService $userService,
     ) {}
 
     public function createChat(CreateMessageDto $createMessageDto, Agent $agent): JsonResponse
     {
         $this->chat->setTitle(mb_substr($createMessageDto->text, 0, 27, 'UTF-8'))
-            ->setAgent($agent)->setUser($this->tokenStorageInterface->getToken()->getUser());
+            ->setAgent($agent)->setUser($this->userService->getUser());
 
         $response = $this->fireworksApiService->send($agent, $createMessageDto->text);
 

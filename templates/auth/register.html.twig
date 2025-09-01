@@ -12,23 +12,24 @@
 <form id="registerForm" class="auth-form" action="{{ url('app_auth_register') }}" v-on:submit.prevent="handleRegister">
     <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" data-type="string" required>
+        <input type="text" id="username" name="username" data-type="string" minlength="2" maxlength="100" required>
     </div>
 
     <div class="form-group">
         <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" data-type="string" required>
+        <input type="email" id="email" name="email" data-type="string" maxlength="120" required>
     </div>
 
     <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" data-type="string" required>
+        <input type="password" id="password" name="password" data-type="string" minlength="3" maxlength="50" required>
         <small class="form-hint"></small>
     </div>
 
     <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" name="password_confirmation" data-type="string" required>
+        <input type="password" id="confirmPassword" name="password_confirmation" data-type="string" minlength="3"
+            maxlength="50" required>
     </div>
 
     <div class="form-group">

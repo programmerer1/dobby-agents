@@ -259,6 +259,9 @@ const app = Vue.createApp({
         async handleResetPassword(e) {
             await this.sendPostRequest(e.srcElement, e.target);
         },
+        async handleChangePassword(e) {
+            await this.sendPostRequest(e.srcElement, e.target);
+        },
         showModal(message) {
             this.modalFormMessage = message;
             this.modalVisible = true;

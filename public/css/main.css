@@ -455,6 +455,10 @@ body {
     margin: 0 auto;
 }
 
+.profile-container {
+    margin-bottom: 50px;
+}
+
 .agent-form {
     background-color: var(--dark-surface);
     border-radius: 1rem;

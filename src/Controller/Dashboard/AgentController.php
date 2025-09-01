@@ -27,13 +27,13 @@ final class AgentController extends AbstractController
     #[Route('/dashboard/agents/load', name: 'app_dashboard_agents_load', methods: ['GET'], format: 'json')]
     public function loadAgents(PaginateAgentService $paginateAgentService): JsonResponse
     {
-        return $paginateAgentService->getAgents($this->getUser());
+        return $paginateAgentService->getAgents();
     }
 
     #[Route('/dashboard/my-agents/load', name: 'app_dashboard_my_agents_load', methods: ['GET'], format: 'json')]
     public function loadMyAgents(PaginateAgentService $paginateAgentService): JsonResponse
     {
-        return $paginateAgentService->getMyAgents($this->getUser());
+        return $paginateAgentService->getMyAgents();
     }
 
     #[Route('/dashboard/create-agent', name: 'app_dashboard_create_agent', methods: ['GET'])]
@@ -49,7 +49,7 @@ final class AgentController extends AbstractController
         #[MapRequestPayload()] CreateAgentDto $createAgentDto,
         CreateAgentService $createAgentService
     ): Response {
-        return $createAgentService->createAgent($createAgentDto, $this->getUser());
+        return $createAgentService->createAgent($createAgentDto);
     }
 
     #[Route('/dashboard/agent/{id}/edit', name: 'app_dashboard_edit_agent', methods: ['GET'])]
