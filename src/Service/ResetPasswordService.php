@@ -43,7 +43,7 @@ class ResetPasswordService
         return new JsonResponse([
             'status' => 200,
             'message' => 'Your password has been changed. You will now be redirected to the authentication page.',
-            //'redirect' => $this->urlGeneratorInterface->generate('app_auth_login')
+            'redirect' => $this->urlGeneratorInterface->generate('app_auth_login')
         ]);
     }
 }

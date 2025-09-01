@@ -15,7 +15,7 @@ class CreateChatService
         public readonly EntityManagerInterface $entityManager,
         public readonly Chat $chat,
         public readonly Message $message,
-        public readonly UrlGeneratorInterface $UrlGeneratorInterface,
+        public readonly UrlGeneratorInterface $urlGeneratorInterface,
         public readonly FireworksApiService $fireworksApiService,
         public readonly TokenStorageInterface $tokenStorageInterface,
     ) {}
@@ -49,7 +49,7 @@ class CreateChatService
 
         return new JsonResponse([
             'status' => 200,
-            'redirect' => $this->UrlGeneratorInterface->generate(
+            'redirect' => $this->urlGeneratorInterface->generate(
                 'app_dashboard_agent_chat_messages',
                 ['id' => $this->chat->getId()]
             )

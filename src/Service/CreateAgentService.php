@@ -15,7 +15,7 @@ class CreateAgentService
         public readonly EntityManagerInterface $entityManager,
         public readonly ValidatorInterface $validator,
         public readonly Agent $agent,
-        public readonly UrlGeneratorInterface $UrlGeneratorInterface,
+        public readonly UrlGeneratorInterface $urlGeneratorInterface,
     ) {}
 
     public function createAgent(CreateAgentDto $createAgentDto, User $user): JsonResponse
@@ -52,7 +52,7 @@ class CreateAgentService
             $response = [
                 'status' => 200,
                 'message' => 'Your agent has been created',
-                'redirect' => $this->UrlGeneratorInterface->generate('app_dashboard_my_agents')
+                'redirect' => $this->urlGeneratorInterface->generate('app_dashboard_my_agents')
             ];
         }
 
