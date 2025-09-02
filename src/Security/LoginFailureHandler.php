@@ -3,7 +3,7 @@
 namespace App\Security;
 
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\LoginFailedAttemptsService;
 use Symfony\Component\HttpFoundation\{Request, JsonResponse};
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
@@ -11,21 +11,30 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerI
 class LoginFailureHandler implements AuthenticationFailureHandlerInterface
 {
     public function __construct(
-        public readonly EntityManagerInterface $entityManager,
+        public readonly LoginFailedAttemptsService $loginFailedAttemptsService,
         public readonly UserRepository $userRepository
     ) {}
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        $content = $request->getContent();
+        $data = [];
+
+        if (!empty($content)) {
+            $decoded = json_decode($content, true);
+
+            if (is_array($decoded)) {
+                $data = $decoded;
+            }
+        }
+
         $email = $data['email'] ?? null;
 
         if ($email) {
             $user = $this->userRepository->findOneBy(['email' => $email]);
 
             if ($user) {
-                $user->incrementFailedAttempts();
-                $this->entityManager->flush();
+                $this->loginFailedAttemptsService->increment($user);
             }
         }
 

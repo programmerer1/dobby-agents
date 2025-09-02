@@ -60,8 +60,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fireworksApiKey = null;
 
-    #[ORM\Column(type: Types::SMALLINT, options: ['default' => 0])]
-    private ?int $loginFailedAttempts = null;
+    #[ORM\Column(type: Types::SMALLINT, options: ['default' => 0, 'unsigned' => true])]
+    private int $loginFailedAttempts = 0;
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $lastLoginFailedAt = null;
@@ -279,7 +279,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLoginFailedAttempts(): ?int
+    public function getLoginFailedAttempts(): int
     {
         return $this->loginFailedAttempts;
     }
@@ -291,12 +291,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLastLoginFailedAt(): ?\DateTimeImmutable
+    public function getLastLoginFailedAt(): ?DateTimeImmutable
     {
         return $this->lastLoginFailedAt;
     }
 
-    public function setLastLoginFailedAt(?\DateTimeImmutable $lastLoginFailedAt): static
+    public function setLastLoginFailedAt(DateTimeImmutable $lastLoginFailedAt): static
     {
         $this->lastLoginFailedAt = $lastLoginFailedAt;
 
@@ -317,20 +317,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastLoginFailedAt = null;
 
         return $this;
-    }
-
-    public function isLoginLocked(int $maxAttempts = 5, int $lockMinutes = 15): bool
-    {
-        if ($this->loginFailedAttempts < $maxAttempts) {
-            return false;
-        }
-
-        if ($this->lastLoginFailedAt === null) {
-            return false;
-        }
-
-        $unlockTime = $this->lastLoginFailedAt->modify("+{$lockMinutes} minutes");
-
-        return new DateTimeImmutable() < $unlockTime;
     }
 }

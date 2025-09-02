@@ -2,7 +2,7 @@ const app = Vue.createApp({
     delimiters: ['[[', ']]'],
     data() {
         return {
-            csrfToken: '',
+            csrfToken: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             modalFormMessage: '',
             modalVisible: false,
 

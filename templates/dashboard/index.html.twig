@@ -7,6 +7,7 @@
     <title>{% block title %}{% endblock %}</title>
     {% block stylesheets %}
     <link rel="stylesheet" href="/css/main.css">
+    <meta name="csrf-token" content="{{ csrf_token('my_csrf') }}">
     {% endblock %}
 </head>
 
