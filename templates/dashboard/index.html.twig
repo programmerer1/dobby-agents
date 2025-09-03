@@ -18,7 +18,12 @@
                 <div class="nav-logo">
                     <h2><a href="{{ url('app_dashboard') }}">Dobby Agents</a></h2>
                 </div>
-                <div class="nav-menu">
+                <button class="hamburger" @click="clickHamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="nav-menu" id="header-nav-menu">
                     <a href="{{ url('app_dashboard') }}" class="nav-link">Dashboard</a>
                     <a href="{{ url('app_dashboard_my_agents') }}" class="nav-link">My Agents</a>
                     <div class="nav-user">

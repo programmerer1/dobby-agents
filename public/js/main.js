@@ -12,7 +12,9 @@ const app = Vue.createApp({
             loading: false,  // состояние загрузки (true пока идёт запрос)
 
             messages: [],     // массив сообщений, которые мы показываем
-            isChatBtnDisabled: false
+            isChatBtnDisabled: false,
+
+            isHeaderMenuOpen: false,
         };
     },
     mounted() {
@@ -261,6 +263,19 @@ const app = Vue.createApp({
         },
         async handleChangePassword(e) {
             await this.sendPostRequest(e.srcElement, e.target);
+        },
+        clickHamburger() {
+            this.isHeaderMenuOpen = !this.isHeaderMenuOpen;
+            this.changeHeaderMenuState();
+        },
+        changeHeaderMenuState() {
+            let menu = document.getElementById('header-nav-menu');
+
+            if (this.isHeaderMenuOpen === true) {
+                menu.classList.add('active');
+            } else {
+                menu.classList.remove('active');
+            }
         },
         showModal(message) {
             this.modalFormMessage = message;
