@@ -1121,6 +1121,10 @@ body {
     cursor: pointer;
 }
 
+[v-cloak] {
+    display: none;
+}
+
 .hasMore {
     margin-top: 20px;
     text-align: center;

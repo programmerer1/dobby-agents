@@ -14,7 +14,7 @@
         <div class="auth-card">
             {% block body %}{% endblock %}
         </div>
-        <div v-if="modalVisible" class="modal-overlay">
+        <div v-if="modalVisible" v-cloak class="modal-overlay">
             <div class="modal">
                 <p>[[ modalFormMessage ]]</p>
                 <button @click="closeModal" class="modal-close-btn"></button>
