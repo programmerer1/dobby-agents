@@ -9,10 +9,15 @@
             <h1 id="pageTitle">My Agents</h1>
             <p id="pageDescription">Manage and organize your AI agents</p>
         </div>
-        <a class="btn btn-primary" href="{{ url('app_dashboard_create_agent') }}">
-            <span class="btn-icon">+</span>
-            Create Agent
-        </a>
+        <div class="page-header-buttons">
+            <a class="btn btn-points" href="#">
+                Points: {{ app.user.getPoints() }}
+            </a>
+            <a class="btn btn-primary" href="{{ url('app_dashboard_create_agent') }}">
+                <span class="btn-icon">+</span>
+                Create Agent
+            </a>
+        </div>
     </div>
 
     <!--<div class="agents-filters">

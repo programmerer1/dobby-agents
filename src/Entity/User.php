@@ -3,7 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\{ArrayCollection, Collection};
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\{PasswordAuthenticatedUserInterface, UserInterface};
@@ -66,11 +67,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $lastLoginFailedAt = null;
 
+    #[ORM\Column(type: Types::INTEGER, options: ['default' => 0, 'unsigned' => true])]
+    private int $points = 0;
+
+    /**
+     * @var Collection<int, MessagePointHistory>
+     */
+    #[ORM\OneToMany(targetEntity: MessagePointHistory::class, mappedBy: 'user')]
+    private Collection $messagePointHistories;
+
     public function __construct()
     {
         $this->agents = new ArrayCollection();
         $this->agentAccesses = new ArrayCollection();
         $this->chats = new ArrayCollection();
+        $this->messagePointHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -315,6 +326,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->loginFailedAttempts = 0;
         $this->lastLoginFailedAt = null;
+
+        return $this;
+    }
+
+    public function getPoints(): int
+    {
+        return $this->points;
+    }
+
+    public function setPoints(int $points): static
+    {
+        $this->points = $points;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MessagePointHistory>
+     */
+    public function getMessagePointHistories(): Collection
+    {
+        return $this->messagePointHistories;
+    }
+
+    public function addMessagePointHistory(MessagePointHistory $messagePointHistory): static
+    {
+        if (!$this->messagePointHistories->contains($messagePointHistory)) {
+            $this->messagePointHistories->add($messagePointHistory);
+            $messagePointHistory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagePointHistory(MessagePointHistory $messagePointHistory): static
+    {
+        if ($this->messagePointHistories->removeElement($messagePointHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($messagePointHistory->getUser() === $this) {
+                $messagePointHistory->setUser(null);
+            }
+        }
 
         return $this;
     }

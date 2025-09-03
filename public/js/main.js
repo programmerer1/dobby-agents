@@ -197,7 +197,7 @@ const app = Vue.createApp({
 
             this.messages.push({
                 'role': 'user',
-                'content': data.text,
+                'content': formData.text,
                 'createdAt': this.formatDateTime(new Date())
             });
             try {

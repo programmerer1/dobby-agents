@@ -17,6 +17,7 @@ class CreateChatService
         public readonly UrlGeneratorInterface $urlGeneratorInterface,
         public readonly FireworksApiService $fireworksApiService,
         public readonly UserService $userService,
+        public readonly MessagePointHistoryService $messagePointHistoryService
     ) {}
 
     public function createChat(CreateMessageDto $createMessageDto, Agent $agent): JsonResponse
@@ -43,6 +44,8 @@ class CreateChatService
             ->setSender('assistant')
             ->setChat($this->chat);
         $this->entityManager->persist($agentMessage);
+
+        $this->messagePointHistoryService->setPoints($this->userService->getUser(), $this->message, $agent);
 
         $this->entityManager->flush();
 

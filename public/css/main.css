@@ -288,6 +288,18 @@ body {
     color: white;
 }
 
+.btn-points {
+    background-color: #ed9507;
+    color: white;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.btn-points:hover {
+    background-color: #c28500;
+    color: white;
+}
+
 .btn-danger:hover {
     background-color: #DC2626;
 }
@@ -416,6 +428,10 @@ body {
 
 .page-header p {
     color: var(--dark-text-secondary);
+}
+
+.page-header-buttons {
+    display: flex;
 }
 
 /* Filters */
