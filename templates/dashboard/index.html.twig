@@ -37,6 +37,10 @@
         <main class="main-content">
             {% block body %}{% endblock %}
         </main>
+        <div v-if="formLoading" class="preloader">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
         <div v-if="modalVisible" v-cloak class="modal-overlay">
             <div class="modal">
                 <p>[[ modalFormMessage ]]</p>

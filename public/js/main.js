@@ -10,10 +10,9 @@ const app = Vue.createApp({
             page: 1,        // текущая страница
             hasMore: true,  // есть ли еще данные (если false, кнопку скрываем)
             loading: false,  // состояние загрузки (true пока идёт запрос)
-
+            formLoading: false, // флаг для sendPostRequest и sendMessage
             messages: [],     // массив сообщений, которые мы показываем
             isChatBtnDisabled: false,
-
             isHeaderMenuOpen: false,
         };
     },
@@ -133,6 +132,7 @@ const app = Vue.createApp({
                 return false;
             }
 
+            this.formLoading = true;
             const formData = Object.fromEntries(new FormData(target).entries());
             const normalized = this.normalizeData(target, formData);
 
@@ -184,6 +184,8 @@ const app = Vue.createApp({
                 this.showModal('Something went wrong. Please try again later. (2)');
                 console.error('Ошибка:', error);
                 return false;
+            } finally {
+                this.formLoading = false;
             }
         },
         async sendMessage(form, target) {
@@ -191,6 +193,7 @@ const app = Vue.createApp({
                 return false;
             }
 
+            this.formLoading = true;
             this.isChatBtnDisabled = true;
             const formData = Object.fromEntries(new FormData(target).entries());
             const normalized = this.normalizeData(target, formData);
@@ -224,13 +227,14 @@ const app = Vue.createApp({
                     this.showModal('Something went wrong. Please try again later. (3)');
                 }
 
-                this.isChatBtnDisabled = false;
                 return result;
             } catch (error) {
-                this.isChatBtnDisabled = false;
                 this.showModal('Something went wrong. Please try again later. (4)');
                 console.error('Ошибка:', error);
                 return false;
+            } finally {
+                this.isChatBtnDisabled = false;
+                this.formLoading = false;
             }
         },
         async handleUpdateFireworksApiKey(e) {
