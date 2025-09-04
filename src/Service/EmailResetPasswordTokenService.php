@@ -14,7 +14,7 @@ class EmailResetPasswordTokenService
     public function send(string $url, string $email)
     {
         $emailMessage = (new TemplatedEmail)
-            ->from('no-reply@example.com')
+            ->from($_ENV['MAILER_SENDER'])
             ->to($email)
             ->subject('Reset your password')
             ->htmlTemplate('emails/reset-password.html.twig')
