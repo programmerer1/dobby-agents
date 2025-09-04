@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main   # или другая твоя ветка
+      - main
 
 jobs:
   deploy:
@@ -22,19 +22,19 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
 
-            echo "📥 Обновляем код из GitHub"
+            echo "Обновляем код из GitHub"
             git fetch origin main
             git reset --hard origin/main
             git clean -fd
 
-            echo "📦 Устанавливаем зависимости"
+            echo "Устанавливаем зависимости"
             composer install --no-dev --optimize-autoloader --no-interaction
 
             echo "🗄 Прогоняем миграции"
             php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 
-            echo "🧹 Чистим и прогреваем кеш"
+            echo "Чистим и прогреваем кеш"
             php bin/console cache:clear --env=prod
             php bin/console cache:warmup --env=prod
 
-            echo "✅ Деплой завершён!"
+            echo "Деплой завершён!"
