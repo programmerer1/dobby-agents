@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <meta name="csrf-token" content="{{ csrf_token('my_csrf') }}">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/main.css?v=1">
 </head>
 
 <body class="auth-page">
@@ -26,7 +26,7 @@
         </div>
     </div>
     <script src="{{ asset('vendor/js/vue.global.js') }}" defer></script>
-    <script src="/js/main.js" defer></script>
+    <script src="/js/main.js?v=1" defer></script>
 </body>
 
 </html>
