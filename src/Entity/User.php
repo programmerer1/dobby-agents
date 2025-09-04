@@ -56,6 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Chat>
      */
     #[ORM\OneToMany(targetEntity: Chat::class, mappedBy: 'user')]
+    #[ORM\OrderBy(['id' => "DESC"])]
     private Collection $chats;
 
     #[ORM\Column(length: 255, nullable: true)]
