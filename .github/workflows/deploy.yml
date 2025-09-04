@@ -1,0 +1,40 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main   # или другая твоя ветка
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+
+            echo "📥 Обновляем код из GitHub"
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
+
+            echo "📦 Устанавливаем зависимости"
+            composer install --no-dev --optimize-autoloader --no-interaction
+
+            echo "🗄 Прогоняем миграции"
+            php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+
+            echo "🧹 Чистим и прогреваем кеш"
+            php bin/console cache:clear --env=prod
+            php bin/console cache:warmup --env=prod
+
+            echo "✅ Деплой завершён!"
