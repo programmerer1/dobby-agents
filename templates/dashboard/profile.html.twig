@@ -8,7 +8,12 @@
         <h1>User Profile</h1>
         <p>Add and change your settings</p>
     </div>
-
+    <div class="form-container profile-container">
+        <div class="form-group">
+            <label>Your Email</label>
+            <input type="text" disabled value="{{ app.user.getEmail() }}">
+        </div>
+    </div>
     <div class="form-container profile-container">
         <form v-on:submit.prevent="handleUpdateFireworksApiKey"
             action="{{ url('app_dashboard_update_fireworks_api_key') }}">
