@@ -35,6 +35,15 @@
             "migrations/.gitignore"
         ]
     },
+    "symfony/aha-send-mailer": {
+        "version": "7.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.2",
+            "ref": "a8a25ed126a6152fc4e0bc7334e7b562bb2b6444"
+        }
+    },
     "symfony/console": {
         "version": "7.3",
         "recipe": {
